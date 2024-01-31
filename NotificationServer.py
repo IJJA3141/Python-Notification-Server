@@ -29,6 +29,7 @@ class NotificationServer(dbus.service.Object):
         dbus.service.Object.__init__(self, bus_name, "/org/freedesktop/Notifications")
 
         self.notifications = {}
+        self.history = {}
         self.default_timeout = 5000
         self.id = 0
 
@@ -75,10 +76,7 @@ class NotificationServer(dbus.service.Object):
                 self.remove_notification(replaces_id, 2)
             return 0
         if app_name == "shw-msg":
-            if replaces_id:
-                pass
-            else:
-                self.print_state()
+            self.print_hist(replaces_id)
             return 0
 
         if replaces_id != 0:
@@ -86,6 +84,7 @@ class NotificationServer(dbus.service.Object):
 
         self.id += 1
         self.notifications[self.id] = Notification(app_name, app_icon, summary, body)
+        self.history[self.id] = Notification(app_name, app_icon, summary, body)
         self.print_state()
 
         if timeout == -1:
@@ -113,5 +112,22 @@ class NotificationServer(dbus.service.Object):
             print("icon", self.notifications[notification_key].app_icon)
             print("summary", self.notifications[notification_key].summary)
             print("body", self.notifications[notification_key].body)
+
+        return
+
+    def print_hist(self, replaces_id):
+        if replaces_id:
+            print("id", replaces_id)
+            print("name", self.history[replaces_id].app_name)
+            print("icon", self.history[replaces_id].app_icon)
+            print("summary", self.history[replaces_id].summary)
+            print("body", self.history[replaces_id].body)
+        else:
+            for notification_key in self.history:
+                print("id", notification_key)
+                print("name", self.history[notification_key].app_name)
+                print("icon", self.history[notification_key].app_icon)
+                print("summary", self.history[notification_key].summary)
+                print("body", self.history[notification_key].body)
 
         return
