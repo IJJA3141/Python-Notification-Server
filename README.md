@@ -76,14 +76,14 @@ if __name__ == "__main__":
   Use the `shw-msg` command to display a list of the notification server's history. You can also query a specific notification by providing its ID (it is optional).
 
   ```zsh
-  notify-send '' -a 'shw-msg'
-  notify-send '' -a 'shw-msg' -r [notification_id]
+  notify-send ' ' -a 'shw-msg'
+  notify-send ' ' -a 'shw-msg' -r [notification_id]
   ```
 
 - **🗑️ Remove Notification:**
   Utilize the rm-msg command to remove a specific notification from the server by providing its ID. (It won't be removed from the history)
   ```zsh
-  notify-send '' -a 'rm-msg' -r [notification_id]
+  notify-send ' ' -a 'rm-msg' -r [notification_id]
   ```
 
 ## 💥 Issues
