@@ -86,6 +86,16 @@ if __name__ == "__main__":
   notify-send '' -a 'rm-msg' -r [notification_id]
   ```
 
+## 💥 Issues
+
+If no notification is shown, it might be that another process already uses `org.freedesktop.Notification`. Try the following command in your terminal:
+
+```zsh
+dbus-send --print-reply --dest=org.freedesktop.DBus  /org/freedesktop/DBus org.freedesktop.DBus.ListNames | grep Notification
+```
+
+If something shows up, it means it is already in use.
+
 ## 🎭 Motivations
 
 I use a modified version of this server for myself that can be found in my [dotfiles](https://github.com/IJJA3141/.config/blob/linux/eww/scripts/notification.py) and couldn't find anything similar. So, if it can be useful to someone, it's here.
