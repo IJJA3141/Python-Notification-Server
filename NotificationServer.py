@@ -2,6 +2,7 @@
 
 import dbus.service
 import threading
+import os.path
 import dbus
 import time
 
@@ -32,6 +33,7 @@ class NotificationServer(dbus.service.Object):
         self.history = {}
         self.default_timeout = 5000
         self.id = 0
+        self.path = "./logs.txt"
 
     # Signals
     @dbus.service.signal("org.freedesktop.notifications", signature="uu")
@@ -85,6 +87,17 @@ class NotificationServer(dbus.service.Object):
         self.id += 1
         self.notifications[self.id] = Notification(app_name, app_icon, summary, body)
         self.history[self.id] = Notification(app_name, app_icon, summary, body)
+
+        if not os.path.isfile(self.path):
+            open(self.path, "x")
+        f = open(self.path, "a")
+
+        f.write(
+            f"""[{self.id}]\nAppname: {app_name or ''}\nSummary: {summary or ''}\nBody: {body or ''}\n\n"""
+        )
+
+        f.close()
+
         self.print_state()
 
         if timeout == -1:
